@@ -1,4 +1,4 @@
-package com.finace_manager.finace_manager;
+package com.finace.manager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

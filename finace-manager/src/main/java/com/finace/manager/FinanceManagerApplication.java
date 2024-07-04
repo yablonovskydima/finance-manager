@@ -1,13 +1,13 @@
-package com.finace_manager.finace_manager;
+package com.finace.manager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FinaceManagerApplication {
+public class FinanceManagerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FinaceManagerApplication.class, args);
+		SpringApplication.run(FinanceManagerApplication.class, args);
 	}
 
 }
