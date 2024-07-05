@@ -3,11 +3,14 @@ package com.finace.manager.services;
 import com.finace.manager.entities.Transaction;
 import com.finace.manager.exeptions.ResourceNotFoundException;
 import com.finace.manager.repositories.TransactionRepository;
+import com.finace.manager.requests.ReportRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TransactionService implements CRUDInterface<Transaction, Long>
 {
     private final TransactionRepository transactionRepository;
@@ -58,5 +61,10 @@ public class TransactionService implements CRUDInterface<Transaction, Long>
     Transaction getCategoryByIdOrThrow(Long id)
     {
         return getById(id).orElseThrow(() -> {return new ResourceNotFoundException("Category is not found");});
+    }
+
+    public List<Transaction> getByFilter(ReportRequest filter)
+    {
+        return transactionRepository.findAllByFilter(filter);
     }
 }

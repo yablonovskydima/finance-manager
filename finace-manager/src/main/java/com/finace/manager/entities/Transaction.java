@@ -5,12 +5,13 @@ import org.hibernate.annotations.Check;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(
         name = "transactions",
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = "category_id")
+            @UniqueConstraint(columnNames = "finance_id", name = "fk_finance_transaction")
         }
 )
 public class Transaction
@@ -20,9 +21,9 @@ public class Transaction
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_category_transaction"))
-    private Category category;
+    @ManyToOne()
+    @JoinColumn(name = "finance_id", foreignKey = @ForeignKey(name = "fk_finance_transaction"))
+    private Finance financeCategory;
 
     @Column(name = "transaction_type", nullable = false, length = 100)
     private String transactionType;
@@ -31,20 +32,23 @@ public class Transaction
     @Check(constraints = "transaction_sum >= 0")
     private Double transactionSum;
 
-    @Column(name = "date", nullable = false)
-    @CreationTimestamp
-    private LocalDateTime date;
+    @Column(name = "transaction_date", nullable = false)
+    private Date date;
 
     @Column(name = "description", nullable = false, length = 150)
     private String description;
 
-    public Transaction(Long id, Category category, String transactionType, Double transactionSum, LocalDateTime date, String description) {
+    public Transaction(Long id, Finance financeCategory, String transactionType, Double transactionSum, Date date, String description) {
         this.id = id;
-        this.category = category;
+        this.financeCategory = financeCategory;
         this.transactionType = transactionType;
         this.transactionSum = transactionSum;
         this.date = date;
         this.description = description;
+    }
+
+    public Transaction() {
+        financeCategory = new Finance();
     }
 
     public Long getId() {
@@ -55,12 +59,12 @@ public class Transaction
         this.id = id;
     }
 
-    public Category getCategory() {
-        return category;
+    public Finance getFinanceCategory() {
+        return financeCategory;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setFinanceCategory(Finance financeCategory) {
+        this.financeCategory = financeCategory;
     }
 
     public String getTransactionType() {
@@ -71,19 +75,19 @@ public class Transaction
         this.transactionType = transactionType;
     }
 
-    public Double getSum() {
+    public Double getTransactionSum() {
         return transactionSum;
     }
 
-    public void setSum(Double transactionSum) {
+    public void setTransactionSum(Double transactionSum) {
         this.transactionSum = transactionSum;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
