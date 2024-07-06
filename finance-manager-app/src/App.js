@@ -1,24 +1,51 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import Categories from './Categories/Categories';
+import EditCategory from './Categories/EditCategory';
+import AddCategory from './Categories/AddCategory';
+import Transactions from './Transactions/Transactions';
 
 function App() {
+  const [view, setView] = useState('categories');
+  const [editingCategory, setEditingCategory] = useState(null);
+
+  const handleAddCategory = () => {
+    setView('addCategory');
+  };
+
+  const handleEditCategory = (category) => {
+    setEditingCategory(category);
+    setView('editCategory');
+  };
+
+  const handleCancelCategory = () => {
+    setView('categories');
+    setEditingCategory(null);
+    window.location.reload();
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <body>
+     <nav>
+        <p onClick={() => setView('categories')}>Categories</p>
+        <p onClick={() => setView('transactions')}>Transactions</p>
+      </nav>
+      {view === 'categories' && (
+        <Categories onEditCategory={handleEditCategory} onAddCategory={handleAddCategory}/>
+      )}
+      {view === 'transactions' && <Transactions />}
+      {view === 'editCategory' && editingCategory && (
+        <EditCategory 
+          category={editingCategory}
+          onCancel={handleCancelCategory}
+        />
+      )}
+      {view === 'addCategory' && (
+        <AddCategory 
+          onCancel={handleCancelCategory}
+        />
+        )}
+    </body>
   );
 }
 
