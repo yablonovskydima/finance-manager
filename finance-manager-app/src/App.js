@@ -4,10 +4,13 @@ import Categories from './Categories/Categories';
 import EditCategory from './Categories/EditCategory';
 import AddCategory from './Categories/AddCategory';
 import Transactions from './Transactions/Transactions';
+import EditTransaction from './Transactions/EditTransaction';
+import AddTransaction from './Transactions/AddTransaction';
 
 function App() {
   const [view, setView] = useState('categories');
   const [editingCategory, setEditingCategory] = useState(null);
+  const [editingTransaction, setEditingTransaction] = useState(null);
 
   const handleAddCategory = () => {
     setView('addCategory');
@@ -24,6 +27,23 @@ function App() {
     window.location.reload();
   };
 
+
+
+  const handleAddTransaction = () => {
+    setView('addTransaction');
+  };
+
+  const handleEditTransaction = (transaction) => {
+    setEditingTransaction(transaction);
+    setView('editTransaction');
+  };
+
+  const handleCancelTransaction = () => {
+    setView('transactions');
+    setEditingTransaction(null);
+    window.location.reload();
+  };
+
   return (
     <body>
      <nav>
@@ -33,7 +53,9 @@ function App() {
       {view === 'categories' && (
         <Categories onEditCategory={handleEditCategory} onAddCategory={handleAddCategory}/>
       )}
-      {view === 'transactions' && <Transactions />}
+      {view === 'transactions' && (
+        <Transactions onEditTransaction={handleEditTransaction} onAddTransaction={handleAddTransaction}/>
+      )}
       {view === 'editCategory' && editingCategory && (
         <EditCategory 
           category={editingCategory}
@@ -44,6 +66,12 @@ function App() {
         <AddCategory 
           onCancel={handleCancelCategory}
         />
+        )}
+      {view === 'editTransaction' && (
+        <EditTransaction />
+        )}
+      {view === 'addTransaction' && (
+        <AddTransaction onCancel={handleCancelTransaction}/>
         )}
     </body>
   );
