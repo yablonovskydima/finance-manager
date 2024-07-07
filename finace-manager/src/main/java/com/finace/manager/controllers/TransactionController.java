@@ -1,6 +1,5 @@
 package com.finace.manager.controllers;
 
-import com.finace.manager.dto.Test;
 import com.finace.manager.entities.Transaction;
 import com.finace.manager.requests.ReportRequest;
 import com.finace.manager.services.TransactionService;
@@ -13,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/transactions")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TransactionController
 {
     private final TransactionService transactionService;
@@ -32,13 +32,6 @@ public class TransactionController
     public ResponseEntity<List<Transaction>> getByFilter(@RequestBody ReportRequest request)
     {
         return ResponseEntity.ok(transactionService.getByFilter(request));
-    }
-
-    @PostMapping("/test")
-    public ResponseEntity<?> test(@RequestBody Test test)
-    {
-        Test created = test;
-        return ResponseEntity.ok(created);
     }
 
     @GetMapping("/{id}")

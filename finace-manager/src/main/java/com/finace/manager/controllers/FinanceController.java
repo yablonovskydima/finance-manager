@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/finances")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FinanceController
 {
     private final FinanceService financeService;
