@@ -49,56 +49,61 @@ const AddTransaction = ({onCancel}) => {
     }
 
     return(
-        <body>
-            <h1>Add transaction</h1>
-            <form>
-                <div>
-                    <label>Category:</label>
-                    <select onChange={(e) => setCategory(JSON.parse(e.target.value))}>
-                        <option value="">Select a category</option>
-                        {categories.map((cat) => (
-                            <option key={cat.id} value={JSON.stringify(cat)}>
-                                {cat.type}
-                            </option>
-                        ))}
+        <div className="container mt-5 d-flex justify-content-center">
+            <div className="w-50">
+                <h1 className="text-center">Add transaction</h1>
+                <form>
+                <div className="mb-3">
+                    <label className="form-label">Category:</label>
+                    <select className="form-select" onChange={(e) => setCategory(JSON.parse(e.target.value))}>
+                    <option value="">Select a category</option>
+                    {categories.map((cat) => (
+                        <option key={cat.id} value={JSON.stringify(cat)}>
+                        {cat.type}
+                        </option>
+                    ))}
                     </select>
                 </div>
-                <div>
-                    <label>Type:</label>
+                <div className="mb-3">
+                    <label className="form-label">Type:</label>
+                    <select className="form-select" value={transactionType} onChange={(e) => setType(e.target.value)}>
+                    <option value="">Select transaction type</option>
+                    <option value="expense">Expense</option>
+                    <option value="income">Income</option>
+                    </select>
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Sum:</label>
                     <input
-                        type="text"
-                        value={transactionType}
-                        onChange={(e) => setType(e.target.value)}
+                    type="number"
+                    className="form-control"
+                    value={transactionSum}
+                    onChange={(e) => setSum(e.target.value)}
                     />
                 </div>
-                <div>
-                    <label>Sum:</label>
+                <div className="mb-3">
+                    <label className="form-label">Date:</label>
                     <input
-                       type="number"
-                       value={transactionSum}
-                       onChange={(e) => setSum(e.target.value)}
+                    type="date"
+                    className="form-control"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
                     />
                 </div>
-                <div>
-                    <label>Date:</label>
+                <div className="mb-3">
+                    <label className="form-label">Description:</label>
                     <input
-                         type="date"
-                         value={date}
-                         onChange={(e) => setDate(e.target.value)}
+                    type="text"
+                    className="form-control"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     />
                 </div>
-                <div>
-                    <label>Description:</label>
-                    <input
-                        type="text"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </div>
-                <button type="button" onClick={handleAdding}>Add</button>
-                <button type="button" onClick={onCancel}>Cancel</button>
-            </form>
-        </body>
+                <button type="button" className="btn btn-primary me-2" onClick={handleAdding}>Add</button>
+                <button type="button" className="btn btn-danger" onClick={onCancel}>Cancel</button>
+                </form>
+            </div>
+        </div>
     );
 }
 

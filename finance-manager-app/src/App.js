@@ -6,11 +6,17 @@ import AddCategory from './Categories/AddCategory';
 import Transactions from './Transactions/Transactions';
 import EditTransaction from './Transactions/EditTransaction';
 import AddTransaction from './Transactions/AddTransaction';
+import ReportGenerator from './ReportGenerator/ReportGenerator';
+import Report from './ReportGenerator/Report';
+import Graph from './ReportGenerator/Graph';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   const [view, setView] = useState('categories');
   const [editingCategory, setEditingCategory] = useState(null);
   const [editingTransaction, setEditingTransaction] = useState(null);
+  const [reportData, setReportData] = useState([]);
 
   const handleAddCategory = () => {
     setView('addCategory');
@@ -44,12 +50,27 @@ function App() {
     window.location.reload();
   };
 
+  const handleGenerateReport = (reportObject) => {
+    setReportData(reportObject);
+    setView('report');
+  };
+
+  const handelGenerateGraph = (reportObject) => {
+    setReportData(reportObject);
+    setView('graph');
+  };
+
   return (
-    <body>
-     <nav>
-        <p onClick={() => setView('categories')}>Categories</p>
-        <p onClick={() => setView('transactions')}>Transactions</p>
+    <body сlassName="App">
+
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container-xl">
+          <p className="navbar-brand" onClick={() => setView('categories')}>Categories</p>
+          <p className="navbar-brand" onClick={() => setView('transactions')}>Transactions</p>
+          <p className="navbar-brand" onClick={() => setView('reportGenerator')}>Report generator</p>
+        </div>
       </nav>
+      
       {view === 'categories' && (
         <Categories onEditCategory={handleEditCategory} onAddCategory={handleAddCategory}/>
       )}
@@ -70,6 +91,17 @@ function App() {
       {view === 'addTransaction' && (
         <AddTransaction onCancel={handleCancelTransaction}/>
         )}
+
+
+      {view === 'reportGenerator' && (
+        <ReportGenerator onGenerateReport={handleGenerateReport} onGenerateGraph={handelGenerateGraph}/>
+        )}
+      {view === 'report' && (
+        <Report report={reportData}/>
+      )}
+      {view === 'graph' && (
+        <Graph report={reportData}/>
+      )}
     </body>
   );
 }

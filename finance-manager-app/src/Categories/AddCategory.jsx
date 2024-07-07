@@ -33,27 +33,31 @@ const AddCategory = ({onCancel}) => {
     }
 
     return(
-        <body>
-            <h1>Add category</h1>
-            <form>
-                <div>
-                    <label>Type:</label>
+        <div className="container mt-5 d-flex justify-content-center">
+            <div className="w-50">
+                <h1 className="text-center">Add category</h1>
+                <form>
+                <div className="mb-3">
+                    <label className="form-label">Type:</label>
                     <input
-                        type="text"
-                        onChange={(e) => setType(e.target.value)}
+                    type="text"
+                    className="form-control"
+                    onChange={(e) => setType(e.target.value)}
                     />
                 </div>
-                <div>
-                    <label>Description:</label>
+                <div className="mb-3">
+                    <label className="form-label">Description:</label>
                     <input
-                        type="text"
-                        onChange={(e) => setDescription(e.target.value)}
+                    type="text"
+                    className="form-control"
+                    onChange={(e) => setDescription(e.target.value)}
                     />
                 </div>
-                <button type="button" onClick={handleAdding}>Add</button>
-                <button type="button" onClick={onCancel}>Cancel</button>
-            </form>
-        </body>
+                <button type="button" className="btn btn-primary me-2" onClick={handleAdding}>Add</button>
+                <button type="button" className="btn btn-danger" onClick={onCancel}>Cancel</button>
+                </form>
+            </div>
+        </div>
     );
 }
 

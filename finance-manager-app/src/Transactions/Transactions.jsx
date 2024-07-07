@@ -27,38 +27,38 @@ const Transactions = ({onEditTransaction, onAddTransaction }) => {
     };
 
     return(
-        <div>
+        <div className="container-fluid vh-100">
             <h1>Transactions</h1>
-            <table className="transactions-table">
-                <thead>
-                    <tr>
-                        <th>№</th>
-                        <th>Category</th>
-                        <th>Transaction type</th>
-                        <th>Sum</th>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Manage</th>
-                    </tr>
+            <table className="table table-bordered table-striped table-hover">
+                <thead className="thead-dark">
+                <tr>
+                    <th>№</th>
+                    <th>Category</th>
+                    <th>Transaction type</th>
+                    <th>Sum</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Manage</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {transactions.map((transaction, index) => (
-                        <tr key={transaction.id}>
-                            <td>{index + 1}</td>
-                            <td>{transaction.financeCategory.type}</td>
-                            <td>{transaction.transactionType}</td>
-                            <td>{transaction.transactionSum}</td>
-                            <td>{transaction.date ? format(new Date(transaction.date), 'yyyy-MM-dd') : ''}</td>
-                            <td>{transaction.description}</td>
-                            <td>
-                                <button onClick={() => onEditTransaction(transaction)}>Edit</button>
-                                <button onClick={() => handleDelete(transaction.id)}>Delete</button>
-                            </td>
-                        </tr>
-                    ))}
+                {transactions.map((transaction, index) => (
+                    <tr key={transaction.id}>
+                    <td>{index + 1}</td>
+                    <td>{transaction.financeCategory.type}</td>
+                    <td>{transaction.transactionType}</td>
+                    <td>{transaction.transactionSum}</td>
+                    <td>{transaction.date ? format(new Date(transaction.date), 'yyyy-MM-dd') : ''}</td>
+                    <td>{transaction.description}</td>
+                    <td>
+                        <button className="btn btn-sm btn-warning m-2" onClick={() => onEditTransaction(transaction)}>Edit</button>
+                        <button className="btn btn-sm btn-danger m-2" onClick={() => handleDelete(transaction.id)}>Delete</button>
+                    </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
-            <button onClick={()=>onAddTransaction()}> Add transaction</button>
+            <button className="btn btn-primary mt-3" onClick={() => onAddTransaction()}>Add transaction</button>
         </div>
     );
 }

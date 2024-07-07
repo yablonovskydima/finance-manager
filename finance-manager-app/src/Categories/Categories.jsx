@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
 
 const Categories = ({onEditCategory, onAddCategory }) => {
@@ -25,32 +26,32 @@ const Categories = ({onEditCategory, onAddCategory }) => {
     };
 
     return (
-        <div>
-            <h1>Categories</h1>
-            <table className="finance-table">
-                <thead>
-                    <tr>
-                        <th>№</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Manage</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {finances.map((finance, index) => (
-                        <tr key={finance.id}>
-                            <td>{index + 1}</td>
-                            <td>{finance.type}</td>
-                            <td>{finance.description}</td>
-                            <td>
-                                <button onClick={() => onEditCategory(finance)}>Edit</button>
-                                <button onClick={() => handleDelete(finance.id)}>Delete</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <button onClick={()=>onAddCategory()}> Add category</button>
+        <div className="container-fluid vh-100 mt-5">
+        <h1>Categories expenses/income</h1>
+        <table className="table table-bordered table-striped table-hover bg-light">
+            <thead className="thead-dark">
+            <tr>
+                <th>№</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Manage</th>
+            </tr>
+            </thead>
+            <tbody>
+            {finances.map((finance, index) => (
+                <tr key={finance.id}>
+                <td>{index + 1}</td>
+                <td>{finance.type}</td>
+                <td>{finance.description}</td>
+                <td>
+                    <button className="btn btn-sm btn-warning m-2" onClick={() => onEditCategory(finance)}>Edit</button>
+                    <button className="btn btn-sm btn-danger m-2" onClick={() => handleDelete(finance.id)}>Delete</button>
+                </td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+        <button className="btn btn-primary" onClick={() => onAddCategory()}>Add category</button>
         </div>
     );
 };
