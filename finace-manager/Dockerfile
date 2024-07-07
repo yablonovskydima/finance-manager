@@ -5,7 +5,7 @@ COPY src /app/src
 
 WORKDIR /app
 
-RUN mvn clean package -DskipTests
+RUN mvn clean package
 
 FROM amazoncorretto:17
 COPY --from=builder /app/target/*.jar /app/app.jar
