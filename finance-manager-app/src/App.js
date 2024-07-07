@@ -53,22 +53,19 @@ function App() {
       {view === 'categories' && (
         <Categories onEditCategory={handleEditCategory} onAddCategory={handleAddCategory}/>
       )}
-      {view === 'transactions' && (
-        <Transactions onEditTransaction={handleEditTransaction} onAddTransaction={handleAddTransaction}/>
-      )}
       {view === 'editCategory' && editingCategory && (
-        <EditCategory 
-          category={editingCategory}
-          onCancel={handleCancelCategory}
-        />
+        <EditCategory category={editingCategory} onCancel={handleCancelCategory}/>
       )}
       {view === 'addCategory' && (
-        <AddCategory 
-          onCancel={handleCancelCategory}
-        />
-        )}
+        <AddCategory onCancel={handleCancelCategory}/>
+      )}
+
+      {view === 'transactions' && (
+        <Transactions onEditTransaction={handleEditTransaction} onAddTransaction={handleAddTransaction}/>
+      )}  
       {view === 'editTransaction' && (
-        <EditTransaction />
+        <EditTransaction transaction={editingTransaction} onCancel={handleCancelTransaction} 
+        />
         )}
       {view === 'addTransaction' && (
         <AddTransaction onCancel={handleCancelTransaction}/>

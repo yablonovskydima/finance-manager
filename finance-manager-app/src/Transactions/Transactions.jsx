@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { format } from 'date-fns';
 
 const Transactions = ({onEditTransaction, onAddTransaction }) => {
     const [transactions, setTransactions] = useState([]);
@@ -47,7 +48,7 @@ const Transactions = ({onEditTransaction, onAddTransaction }) => {
                             <td>{transaction.financeCategory.type}</td>
                             <td>{transaction.transactionType}</td>
                             <td>{transaction.transactionSum}</td>
-                            <td>{transaction.date}</td>
+                            <td>{transaction.date ? format(new Date(transaction.date), 'yyyy-MM-dd') : ''}</td>
                             <td>{transaction.description}</td>
                             <td>
                                 <button onClick={() => onEditTransaction(transaction)}>Edit</button>
