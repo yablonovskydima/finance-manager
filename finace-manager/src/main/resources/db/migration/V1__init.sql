@@ -1,4 +1,4 @@
-    CREATE DATABASE IF NOT EXISTS finance_manager_db;
+CREATE DATABASE IF NOT EXISTS finance_manager_db;
 USE finance_manager_db;
 
 CREATE TABLE IF NOT EXISTS finances (
@@ -21,3 +21,17 @@ CREATE TABLE IF NOT EXISTS transactions (
     CONSTRAINT ch_transaction_sum_is_not_negative CHECK(transaction_sum >= 0)
 
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS users(
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    is_account_non_expired BOOLEAN NOT NULL DEFAULT TRUE,
+    is_account_non_locked BOOLEAN NOT NULL DEFAULT TRUE,
+    is_credentials_non_expired BOOLEAN NOT NULL DEFAULT TRUE,
+    is_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+    role ENUM('ROLE_ADMIN', 'ROLE_USER', 'ROLE_SYS') NOT NULL,
+    PRIMARY KEY(id),
+    CONSTRAINT uq_users_username UNIQUE(username)
+)ENGINE=InnoDB;

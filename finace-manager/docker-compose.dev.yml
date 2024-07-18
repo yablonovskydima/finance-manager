@@ -22,7 +22,7 @@ services:
     container_name: finance_manager
     restart: always
     ports:
-      - "8080:8080"
+      - "8083:8083"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/finance_manager_db
       SPRING_DATASOURCE_USERNAME: user
