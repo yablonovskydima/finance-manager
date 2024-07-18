@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS transactions (
 
 CREATE TABLE IF NOT EXISTS users(
     id BIGINT NOT NULL AUTO_INCREMENT,
-    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    username VARCHAR(40) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     is_account_non_expired BOOLEAN NOT NULL DEFAULT TRUE,
     is_account_non_locked BOOLEAN NOT NULL DEFAULT TRUE,
@@ -34,4 +35,5 @@ CREATE TABLE IF NOT EXISTS users(
     role ENUM('ROLE_ADMIN', 'ROLE_USER', 'ROLE_SYS') NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT uq_users_username UNIQUE(username)
+    CONSTRAINT uq_users_email UNIQUE(email)
 )ENGINE=InnoDB;
