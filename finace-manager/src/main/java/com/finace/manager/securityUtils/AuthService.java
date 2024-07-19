@@ -9,8 +9,6 @@ public interface AuthService
     JwtResponse refresh(JwtRefreshRequest refreshRequest);
     boolean validate(String token);
     void changePassword(String username, ChangeRequest request);
-    void internalChangePassword(String username, ChangeRequest request);
-
     void changeUsername(String username, ChangeRequest request);
     void changeEmail(String username, ChangeRequest request);
     void deleteAccount(String username);

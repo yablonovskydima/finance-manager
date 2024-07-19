@@ -17,3 +17,10 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+
+security:
+  jwt:
+    secret: ${SECURITY_JWT_SECRET:129dsd04281dj4103c01u1nxzj1x29123hxxkl123masdash3gu1fyh2dvk23mkm122}
+    access: ${SECURITY_JWT_ACCESS_EXPIRED:3600000}
+    shared: ${SECURITY_JWT_ACCESS_EXPIRED:3600000}
+    refresh: ${SECURITY_JWT_REFRESH_EXPIRED:2592000000}
