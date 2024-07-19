@@ -34,6 +34,6 @@ CREATE TABLE IF NOT EXISTS users(
     is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
     role ENUM('ROLE_ADMIN', 'ROLE_USER', 'ROLE_SYS') NOT NULL,
     PRIMARY KEY(id),
-    CONSTRAINT uq_users_username UNIQUE(username)
+    CONSTRAINT uq_users_username UNIQUE(username),
     CONSTRAINT uq_users_email UNIQUE(email)
 )ENGINE=InnoDB;
