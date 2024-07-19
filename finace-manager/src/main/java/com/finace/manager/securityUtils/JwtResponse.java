@@ -1,14 +1,14 @@
-package com.finace.manager.requests.security;
+package com.finace.manager.securityUtils;
 
-public class TokenResponse
+public class JwtResponse
 {
     private String accessToken;
     private String refreshToken;
 
-    public TokenResponse() {
+    public JwtResponse() {
     }
 
-    public TokenResponse(String accessToken, String refreshToken) {
+    public JwtResponse(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }

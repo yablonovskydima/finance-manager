@@ -55,6 +55,16 @@ public class UserService implements CRUDInterface<User, Long>
         delete(getUserOrThrow(id));
     }
 
+    public User getByUsername(String username)
+    {
+        return userRepository.findByUsername(username).orElseThrow(() -> {return  new ResourceNotFoundException("User is not found");});
+    }
+
+    public User getByEmail(String email)
+    {
+        return userRepository.findByEmail(email).orElseThrow(() -> {return  new ResourceNotFoundException("User is not found");});
+    }
+
     User getUserOrThrow(Long id)
     {
         return getById(id).orElseThrow(() -> {return  new ResourceNotFoundException("User is not found");});
