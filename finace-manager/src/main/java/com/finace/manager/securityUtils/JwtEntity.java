@@ -20,6 +20,11 @@ public class JwtEntity implements UserDetails
         this.userSupplier = userSupplier;
     }
 
+    public JwtEntity(Supplier<User> userSupplier)
+    {
+        this.userSupplier = userSupplier;
+    }
+
     public User getUser() {
         return ensureUser();
     }

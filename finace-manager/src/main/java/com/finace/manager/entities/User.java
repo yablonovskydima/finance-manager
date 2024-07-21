@@ -62,6 +62,12 @@ public class User
     public User() {
     }
 
+    public User(String email, String username, String password_hash) {
+        this.email = email;
+        this.username = username;
+        this.password_hash = password_hash;
+    }
+
     public Long getId() {
         return id;
     }
