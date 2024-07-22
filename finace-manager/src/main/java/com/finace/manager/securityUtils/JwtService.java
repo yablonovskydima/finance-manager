@@ -47,12 +47,12 @@ public class JwtService
         Date now = new Date();
         Date validity = new Date(now.getTime() + jwtProps.getAccess());
 
-        Set<String> roles = convertToStrRoles(userDetails.getAuthorities());
+        String role = convertToStrRoles(userDetails.getAuthorities());
 
         return Jwts.builder()
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
-                .claim("roles", roles)
+                .claim("role", role)
                 .issuedAt(now)
                 .expiration(validity)
                 .signWith(key)
@@ -63,11 +63,11 @@ public class JwtService
         Date now = new Date();
         Date validity = new Date(now.getTime() + jwtProps.getRefresh());
 
-        Set<String> roles = convertToStrRoles(userDetails.getAuthorities());
+        String role = convertToStrRoles(userDetails.getAuthorities());
 
         return Jwts.builder()
                 .subject(userDetails.getUsername())
-                .claim("roles", roles)
+                .claim("role", role)
                 .issuedAt(now)
                 .expiration(validity)
                 .signWith(key)
@@ -89,23 +89,20 @@ public class JwtService
         return response;
     }
 
-    private Set<String> convertToStrRoles(Collection<? extends GrantedAuthority> authorities) {
-        Set<? extends GrantedAuthority> authoritiesSet = (Set<? extends GrantedAuthority>)authorities;
-        return authoritiesSet.stream()
+    private String convertToStrRoles(Collection<? extends GrantedAuthority> authorities) {
+        return authorities.stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
+                .collect(Collectors.joining(", "));
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
 
-        List<String> rolesList = (List<String>)extractClaim(token, claims -> claims.get("roles"));
-        Set<String> roles = new HashSet<>(rolesList);
-
-        Set<String> userDetailsRoles = convertToStrRoles(userDetails.getAuthorities());
+        String role = (String) extractClaim(token, claims -> claims.get("role"));
+        String userDetailsRoles = convertToStrRoles(userDetails.getAuthorities());
 
         return userDetails.getUsername().equals(username) &&
-                userDetailsRoles.equals(roles) &&
+                userDetailsRoles.equals(role) &&
                 !isTokenExpired(token);
     }
 

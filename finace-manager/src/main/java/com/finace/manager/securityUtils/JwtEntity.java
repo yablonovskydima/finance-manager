@@ -1,10 +1,13 @@
 package com.finace.manager.securityUtils;
 
+import com.finace.manager.entities.Role;
 import com.finace.manager.entities.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.function.Supplier;
 
 public class JwtEntity implements UserDetails
@@ -35,7 +38,13 @@ public class JwtEntity implements UserDetails
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(ensureUser().getRole().name());
+        return Collections.singletonList(grantedAuthority);
+    }
+
+    public void setAuthorities(Role role)
+    {
+        ensureUser().setRole(role);
     }
 
     @Override

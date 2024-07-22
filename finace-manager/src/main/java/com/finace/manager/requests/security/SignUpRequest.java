@@ -49,6 +49,13 @@ public class SignUpRequest
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String confirmPassword;
 
+    public SignUpRequest(String login, String email, String password, String confirmPassword) {
+        this.login = login;
+        this.email = email;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+    }
+
     public SignUpRequest() {
     }
 

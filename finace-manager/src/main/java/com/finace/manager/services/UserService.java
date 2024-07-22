@@ -24,6 +24,11 @@ public class UserService implements CRUDInterface<User, Long>
     @Override
     public User create(User user)
     {
+        user.setIs_account_non_expired(Boolean.TRUE);
+        user.setIs_account_non_locked(Boolean.TRUE);
+        user.setIs_credentials_non_expired(Boolean.TRUE);
+        user.setIs_enabled(Boolean.TRUE);
+        user.setIs_deleted(Boolean.FALSE);
         return userRepository.save(user);
     }
 
