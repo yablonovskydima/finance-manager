@@ -2,6 +2,7 @@ package com.finace.manager.controllers;
 
 import com.finace.manager.entities.Role;
 import com.finace.manager.entities.User;
+import com.finace.manager.requests.security.ChangeRequest;
 import com.finace.manager.requests.security.SignInRequest;
 import com.finace.manager.requests.security.SignUpRequest;
 import com.finace.manager.requests.validation.OnCreate;
@@ -10,6 +11,7 @@ import com.finace.manager.securityUtils.JwtRefreshRequest;
 import com.finace.manager.securityUtils.JwtResponse;
 import com.finace.manager.securityUtils.SimpleAuthService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +78,49 @@ public class AuthController
     {
         JwtResponse response = new JwtResponse();
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/users/{username}/change-password")
+    public ResponseEntity<?> changePassword(@PathVariable String username,
+                                            @RequestBody ChangeRequest request)
+    {
+        if (request.getOldValue().equals(request.getNewValue()))
+        {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Old password matches new password.");
+        }
+        authService.changePassword(username, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/users/{username}/change-username")
+    public ResponseEntity<?> changeUsername(@PathVariable String username,
+                                            @RequestBody ChangeRequest request)
+    {
+        if (request.getOldValue().equals(request.getNewValue()))
+        {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Old username matches new username.");
+        }
+        authService.changeUsername(username, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/users/{username}/change-email")
+    public ResponseEntity<?> changeEmail(@PathVariable String username,
+                                            @RequestBody ChangeRequest request)
+    {
+        if (request.getOldValue().equals(request.getNewValue()))
+        {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Old email matches new email.");
+        }
+        authService.changeEmail(username, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/auth/users/{username}/drop-account")
+    public ResponseEntity<?> dropAccount(@PathVariable("username") String username)
+    {
+        authService.deleteAccount(username);
+        return ResponseEntity.accepted().build();
     }
 
     private JwtEntity complateJwtEntity(SignUpRequest request, Role role)
