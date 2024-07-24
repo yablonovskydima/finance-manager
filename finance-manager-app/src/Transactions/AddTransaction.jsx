@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
+import {useNavigate } from 'react-router-dom';
 
-const AddTransaction = ({onCancel}) => {
+const AddTransaction = () => {
     const [categories, setCategories] = useState([]);
-
+    const navigate = useNavigate();
     const [financeCategory, setCategory] = useState('');
     const [transactionType, setType] = useState('');
     const [transactionSum, setSum] = useState(0);
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
+
+    const onCancel = () => {
+        navigate('/transactions'); 
+    };
 
     useEffect(() => {
         fetch('http://localhost:8080/api/v1/finances')

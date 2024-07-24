@@ -1,8 +1,15 @@
 import React from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import { useLocation } from "react-router-dom";
 
-const Report = ({report}) => 
-{
+const Report = () => 
+{   
+    const location = useLocation();
+    const { report } = location.state || {};
+
+    if (!report) {
+        return <div>No report data available</div>;
+    }
 
     const { from, to, transactions } = report;
 

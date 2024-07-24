@@ -1,7 +1,11 @@
 import React from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import { useLocation } from "react-router-dom";
 
-const Graph = ({ report }) => {
+const Graph = () => {
+
+  const location = useLocation();
+  const { report } = location.state || {};
   const sortedTransactions = report.transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const data = sortedTransactions.map(transaction => ({
@@ -10,7 +14,6 @@ const Graph = ({ report }) => {
   }));
 
   const dateFormatter = (tick) => {
-    // Функція для форматування дати у формат "yyyy-MM-dd"
     const date = new Date(tick);
     const formattedDate = `${date.getFullYear()}-${('0' + (date.getMonth() + 1)).slice(-2)}-${('0' + date.getDate()).slice(-2)}`;
     return formattedDate;

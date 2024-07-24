@@ -1,9 +1,15 @@
 import React, { useState } from "react";
+import {useNavigate } from 'react-router-dom';
 
-const AddCategory = ({onCancel}) => {
+const AddCategory = () => {
 
     const [type, setType] = useState('');
     const [description, setDescription] = useState('');
+    const navigate = useNavigate();
+
+    const onCancel = () => {
+        navigate('/categories'); 
+    };
 
     const handleAdding = () => {
         const newCategory = {

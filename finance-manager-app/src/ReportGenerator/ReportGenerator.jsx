@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const ReportGenerator = ({ onGenerateReport, onGenerateGraph }) => 
+const ReportGenerator = () => 
 {
     const [categories, setCategories] = useState([]);
-
+    const navigate = useNavigate();
     const [from, setDateFrom] = useState(null);
     const [to, setDateTo] = useState(null);
     const [transactionType, setTransactionType] = useState(null);
@@ -44,7 +45,7 @@ const ReportGenerator = ({ onGenerateReport, onGenerateGraph }) =>
                 from,
                 to
             }
-            onGenerateReport(reportObject);
+            navigate('/report', { state: { report: reportObject } });
         })
         .catch(error => console.error('Error generating report:', error));
     };
@@ -71,9 +72,14 @@ const ReportGenerator = ({ onGenerateReport, onGenerateGraph }) =>
                 from,
                 to
             }
-            onGenerateGraph(reportObject);
+            navigate('/graph', { state: { report: reportObject } });
         })
         .catch(error => console.error('Error generating report:', error));
+    };
+
+    const onCancel = () => 
+    {
+        navigate(`/categories`);
     };
 
     return(
@@ -124,7 +130,7 @@ const ReportGenerator = ({ onGenerateReport, onGenerateGraph }) =>
                 </div>
                 <button type="button" className="btn btn-primary me-2" disabled={!from || !to} onClick={handleGenerate}>Generate</button>
                 <button type="button" className="btn btn-success me-2" disabled={!transactionType || !from || !to} onClick={hangelGenerateGraph}>Graph</button>
-                <button type="button" className="btn btn-danger">Cancel</button>
+                <button type="button" className="btn btn-danger" onClick={onCancel}>Cancel</button>
                 </form>
             </div>
         </div>

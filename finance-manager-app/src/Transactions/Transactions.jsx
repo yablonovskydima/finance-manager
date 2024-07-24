@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
-const Transactions = ({onEditTransaction, onAddTransaction }) => {
+const Transactions = () => {
     const [transactions, setTransactions] = useState([]);
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('http://localhost:8080/api/v1/transactions')
@@ -24,6 +25,14 @@ const Transactions = ({onEditTransaction, onAddTransaction }) => {
             }
         })
         .catch(error => console.error('Error deleting data:', error));
+    };
+
+    const handleEdit = (transaction) => {
+        navigate(`/transactions/edit/${transaction.id}`);
+    };
+
+    const handleAddTransaction = () => {
+        navigate('/transactions/add'); 
     };
 
     return(
@@ -51,14 +60,14 @@ const Transactions = ({onEditTransaction, onAddTransaction }) => {
                     <td>{transaction.date ? format(new Date(transaction.date), 'yyyy-MM-dd') : ''}</td>
                     <td>{transaction.description}</td>
                     <td>
-                        <button className="btn btn-sm btn-warning m-2" onClick={() => onEditTransaction(transaction)}>Edit</button>
+                        <button className="btn btn-sm btn-warning m-2" onClick={() => handleEdit(transaction)}>Edit</button>
                         <button className="btn btn-sm btn-danger m-2" onClick={() => handleDelete(transaction.id)}>Delete</button>
                     </td>
                     </tr>
                 ))}
                 </tbody>
             </table>
-            <button className="btn btn-primary mt-3" onClick={() => onAddTransaction()}>Add transaction</button>
+            <button className="btn btn-primary mt-3" onClick={handleAddTransaction}>Add transaction</button>
         </div>
     );
 }

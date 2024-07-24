@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
 
-const EditTransaction = ({transaction, onCancel}) => {
+const EditTransaction = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [transaction, setTransaction] = useState(null);
     const [categories, setCategories] = useState([]);
-
-    const [financeCategory, setCategory] = useState(transaction.financeCategory ||'');
-    const [transactionType, setType] = useState(transaction.transactionType ||'');
-    const [transactionSum, setSum] = useState(transaction.transactionSum || 0);
-    const [date, setDate] = useState(transaction.date || '');
-    const [description, setDescription] = useState(transaction.description ||'');
+    const [financeCategory, setCategory] = useState('');
+    const [transactionType, setType] = useState('');
+    const [transactionSum, setSum] = useState(0);
+    const [date, setDate] = useState('');
+    const [description, setDescription] = useState('');
 
     useEffect(() => {
         fetch('http://localhost:8080/api/v1/finances')
@@ -16,7 +19,24 @@ const EditTransaction = ({transaction, onCancel}) => {
             .catch(error => console.error('Error fetching categories:', error));
     }, []);
 
-    
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/v1/transactions/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                setTransaction(data);
+                setCategory(data.financeCategory);
+                setType(data.transactionType);
+                setSum(data.transactionSum);
+                setDate(data.date);
+                setDescription(data.description);
+            })
+            .catch(error => console.error('Error fetching transaction:', error));
+    }, [id]);
+
+    const onCancel = () => {
+        navigate('/transactions'); 
+    };
+
     const handelUpdate =()=>{
         const updatedTransaction = {
             id: transaction.id,
@@ -29,7 +49,7 @@ const EditTransaction = ({transaction, onCancel}) => {
             description
         };
 
-        fetch(`http://localhost:8080/api/v1/transactions/${transaction.id}`, {
+        fetch(`http://localhost:8080/api/v1/transactions/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,6 +68,8 @@ const EditTransaction = ({transaction, onCancel}) => {
         });
         onCancel();
     };
+
+
 
     return(
         <div className="container mt-5 d-flex justify-content-center">
@@ -102,7 +124,7 @@ const EditTransaction = ({transaction, onCancel}) => {
                     />
                 </div>
                 <button type="button" className="btn btn-primary me-2" onClick={handelUpdate}>Edit</button>
-                <button type="button" className="btn btn-danger" onClick={onCancel}>Cancel</button>
+                <button type="button" className="btn btn-danger " onClick={onCancel}>Cancel</button>
                 </form>
             </div>
         </div>

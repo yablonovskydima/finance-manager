@@ -1,7 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
 
-const EditCategory = ({ category, onCancel  }) => 
+const EditCategory = () => 
 {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [category, setCategory] = useState('');
+
+
+    const onCancel = () => {
+        navigate('/categories'); 
+    };
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/v1/categories/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                setCategory(data);
+            })
+            .catch(error => console.error('Error fetching category:', error));
+    }, [id]);
+
     const [type, setType] = useState(category.type || '');
     const [description, setDescription] = useState(category.description || '');
 

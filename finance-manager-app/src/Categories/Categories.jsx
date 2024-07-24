@@ -1,8 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
+import {useNavigate } from 'react-router-dom';
 
-const Categories = ({onEditCategory, onAddCategory }) => {
+const Categories = () => {
     const [finances, setFinances] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('http://localhost:8080/api/v1/finances')
@@ -25,6 +27,14 @@ const Categories = ({onEditCategory, onAddCategory }) => {
         .catch(error => console.error('Error deleting data:', error));
     };
 
+    const onEditCategory = (finance) => {
+        navigate(`/categories/edit/${finance.id}`);
+    };
+
+    const onAddCategory = () => {
+        navigate(`/categories/add`);
+    };
+
     return (
         <div className="container-fluid vh-100 mt-5">
         <h1>Categories expenses/income</h1>
@@ -44,14 +54,14 @@ const Categories = ({onEditCategory, onAddCategory }) => {
                 <td>{finance.type}</td>
                 <td>{finance.description}</td>
                 <td>
-                    <button className="btn btn-sm btn-warning m-2" onClick={() => onEditCategory(finance)}>Edit</button>
-                    <button className="btn btn-sm btn-danger m-2" onClick={() => handleDelete(finance.id)}>Delete</button>
+                    <button className="btn btn-sm btn-warning m-2" onClick={onEditCategory(finance)}>Edit</button>
+                    <button className="btn btn-sm btn-danger m-2" onClick={handleDelete(finance.id)}>Delete</button>
                 </td>
                 </tr>
             ))}
             </tbody>
         </table>
-        <button className="btn btn-primary" onClick={() => onAddCategory()}>Add category</button>
+        <button className="btn btn-primary" onClick={onAddCategory}>Add category</button>
         </div>
     );
 };
