@@ -106,7 +106,7 @@ public class SimpleAuthService implements AuthService
     {
         User user = userService.getByUsername(username);
 
-        if (compareValues(user.getPassword_hash(), passwordEncoder.encode(request.getOldValue())))
+        if (!passwordEncoder.matches(request.getOldValue(), user.getPassword_hash()))
         {
             throw new ValuesDoesNotMatchException("Specified password does not match your password");
         }
@@ -121,7 +121,7 @@ public class SimpleAuthService implements AuthService
     {
         User user = userService.getByUsername(username);
 
-        if (compareValues(user.getUsername(), request.getOldValue()))
+        if (!passwordEncoder.matches(request.getOldValue(), user.getPassword_hash()))
         {
             throw new ValuesDoesNotMatchException("Specified username does not match yours");
         }
@@ -135,7 +135,7 @@ public class SimpleAuthService implements AuthService
     {
         User user = userService.getByUsername(username);
 
-        if (compareValues(user.getEmail(), request.getOldValue()))
+        if (!compareValues(user.getEmail(), request.getOldValue()))
         {
             throw new ValuesDoesNotMatchException("Specified email does not match yours");
         }

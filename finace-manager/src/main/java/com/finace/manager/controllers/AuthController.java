@@ -116,7 +116,7 @@ public class AuthController
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/auth/users/{username}/drop-account")
+    @DeleteMapping("/users/{username}/drop-account")
     public ResponseEntity<?> dropAccount(@PathVariable("username") String username)
     {
         authService.deleteAccount(username);
