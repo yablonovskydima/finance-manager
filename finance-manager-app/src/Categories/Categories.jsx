@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Categories = () => {
     const [finances, setFinances] = useState([]);
@@ -27,7 +27,7 @@ const Categories = () => {
         .catch(error => console.error('Error deleting data:', error));
     };
 
-    const onEditCategory = (finance) => {
+    const onEditCategory = (finance) => () => {
         navigate(`/categories/edit/${finance.id}`);
     };
 
@@ -37,31 +37,31 @@ const Categories = () => {
 
     return (
         <div className="container-fluid vh-100 mt-5">
-        <h1>Categories expenses/income</h1>
-        <table className="table table-bordered table-striped table-hover bg-light">
-            <thead className="thead-dark">
-            <tr>
-                <th>№</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Manage</th>
-            </tr>
-            </thead>
-            <tbody>
-            {finances.map((finance, index) => (
-                <tr key={finance.id}>
-                <td>{index + 1}</td>
-                <td>{finance.type}</td>
-                <td>{finance.description}</td>
-                <td>
-                    <button className="btn btn-sm btn-warning m-2" onClick={onEditCategory(finance)}>Edit</button>
-                    <button className="btn btn-sm btn-danger m-2" onClick={handleDelete(finance.id)}>Delete</button>
-                </td>
-                </tr>
-            ))}
-            </tbody>
-        </table>
-        <button className="btn btn-primary" onClick={onAddCategory}>Add category</button>
+            <h1>Categories expenses/income</h1>
+            <table className="table table-bordered table-striped table-hover bg-light">
+                <thead className="thead-dark">
+                    <tr>
+                        <th>№</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Manage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {finances.map((finance, index) => (
+                        <tr key={finance.id}>
+                            <td>{index + 1}</td>
+                            <td>{finance.type}</td>
+                            <td>{finance.description}</td>
+                            <td>
+                                <button className="btn btn-sm btn-warning m-2" onClick={onEditCategory(finance)}>Edit</button>
+                                <button className="btn btn-sm btn-danger m-2" onClick={() => handleDelete(finance.id)}>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <button className="btn btn-primary" onClick={onAddCategory}>Add category</button>
         </div>
     );
 };

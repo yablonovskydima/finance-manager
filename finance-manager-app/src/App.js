@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useContext} from 'react';
+import React, {useEffect, useContext} from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Categories from './Categories/Categories';
 import EditCategory from './Categories/EditCategory';
@@ -16,8 +16,6 @@ import ProtectedRoute from './Auth/ProtectedRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthContext } from './Auth/AuthContext';
 import EditAccount from './Account/EditAccount';
-
-
 
 function App() {
   const { username, logout } = useContext(AuthContext);

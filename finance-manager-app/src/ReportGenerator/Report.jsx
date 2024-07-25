@@ -29,11 +29,11 @@ const Report = () =>
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4444', '#AAEE00'];
 
     const totalIncome = transactions
-        .filter(transaction => transaction.transactionType === "Income")
+        .filter(transaction => transaction.transactionType === "income")
         .reduce((acc, transaction) => acc + transaction.transactionSum, 0);
 
     const totalExpense = transactions
-        .filter(transaction => transaction.transactionType === "Expense")
+        .filter(transaction => transaction.transactionType === "expense")
         .reduce((acc, transaction) => acc + transaction.transactionSum, 0);
     
     const profitLoss = totalIncome - totalExpense;

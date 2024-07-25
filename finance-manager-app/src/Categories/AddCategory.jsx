@@ -17,7 +17,7 @@ const AddCategory = () => {
             type,
             description
         };
-
+    
         fetch(`http://localhost:8080/api/v1/finances`, {
             method: 'POST',
             headers: {
@@ -32,11 +32,13 @@ const AddCategory = () => {
                 throw new Error('Failed to add new category');
             }
         })
+        .then(data => {
+            onCancel();
+        })
         .catch(error => {
             console.error('Error adding new category:', error);
         });
-        onCancel();
-    }
+    };
 
     return(
         <div className="container mt-5 d-flex justify-content-center">

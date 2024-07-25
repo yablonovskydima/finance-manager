@@ -13,10 +13,12 @@ const EditCategory = () =>
     };
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/categories/${id}`)
+        fetch(`http://localhost:8080/api/v1/finances/${id}`)
             .then(response => response.json())
             .then(data => {
                 setCategory(data);
+                setType(data.type || '');
+                setDescription(data.description || '');
             })
             .catch(error => console.error('Error fetching category:', error));
     }, [id]);
