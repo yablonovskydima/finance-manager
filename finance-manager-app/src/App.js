@@ -16,6 +16,7 @@ import RegisterForm from './Auth/RegisterForm';
 import ProtectedRoute from './Auth/ProtectedRoute';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthContext } from './Auth/AuthContext';
+import EditAccount from './Account/EditAccount';
 
 const validateToken = async () => {
   const token = localStorage.getItem('accessToken');
@@ -57,8 +58,9 @@ function App() {
               </>
             ) : (
               <>
-                <span className="navbar-text text-white">Logged as {username}</span>
+                <Link to="/edit-account"><button className="btn btn-outline-light" >Edit account</button></Link>
                 <button className="btn btn-outline-light" onClick={logout}>Logout</button>
+                <span className="navbar-text text-white">Logged as {username}</span>
               </>
             )}
           </div>
@@ -80,6 +82,8 @@ function App() {
 
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+
+          <Route path="/edit-account" element={<ProtectedRoute element={<EditAccount/>}/>}/>
         </Routes>
       </div>
     </Router>
