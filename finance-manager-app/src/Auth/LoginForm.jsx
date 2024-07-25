@@ -8,6 +8,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ const LoginForm = () => {
       login(username);
       navigate('/categories');
     } catch (error) {
-      console.error('Login error', error);
+      setErrorMessage(error.response.data.message || 'Failed to login');
     }
   };
 
@@ -32,6 +33,7 @@ const LoginForm = () => {
               <h5 className="card-title mb-0">Login</h5>
             </div>
             <div className="card-body">
+              {errorMessage && <div className="alert alert-danger" role="alert">{errorMessage}</div>}
               <form onSubmit={handleLogin}>
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">Username</label>

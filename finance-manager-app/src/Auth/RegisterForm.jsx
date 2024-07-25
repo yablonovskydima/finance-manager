@@ -14,6 +14,7 @@ const [login, setLogin] = useState('');
   const [loginError, setLoginError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ const [login, setLogin] = useState('');
       authLogin(login);
       navigate('/categories');
     } catch (error) {
-      console.error('Registration error', error);
+      setErrorMessage(error.response.data.message || "Registration failed")
     }
   };
 
@@ -113,6 +114,7 @@ const [login, setLogin] = useState('');
             <h5 className="card-title mb-0">Register</h5>
           </div>
           <div className="card-body">
+          {errorMessage && <div className="alert alert-danger" role="alert">{errorMessage}</div>}
             <form onSubmit={handleRegister}>
               <div className="mb-3">
               <label htmlFor="login" className="form-label">

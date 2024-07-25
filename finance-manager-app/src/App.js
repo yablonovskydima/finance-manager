@@ -1,6 +1,5 @@
 import './App.css';
-import React, {useEffect, useContext} from 'react';
-import axios from 'axios';
+import React, {useContext} from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Categories from './Categories/Categories';
 import EditCategory from './Categories/EditCategory';
@@ -18,29 +17,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthContext } from './Auth/AuthContext';
 import EditAccount from './Account/EditAccount';
 
-const validateToken = async () => {
-  const token = localStorage.getItem('accessToken');
-  if (token) {
-    try {
-      await axios.post('http://localhost:8080/api/v1/auth/validate', {}, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-    } catch (error) {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('username');
-    }
-  }
-};
+
 
 function App() {
-
-  useEffect(() => {
-    validateToken();
-  }, []);
-
   const { username, logout } = useContext(AuthContext);
 
   return (
