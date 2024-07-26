@@ -19,6 +19,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>
             AND (:#{#filter.to} IS NULL OR transaction.date <= :#{#filter.to})
             AND (:#{#filter.transactionType}  IS NULL OR transaction.transactionType = :#{#filter.transactionType})
             AND (:#{#filter.financeCategoryName}  IS NULL OR transaction.financeCategory.type = :#{#filter.financeCategoryName})
+            AND (:#{#filter.ownerUsername}  IS NULL OR transaction.owner.username = :#{#filter.ownerUsername})
             """)
     List<Transaction> findAllByFilter(@Param("filter") ReportRequest filter);
 
