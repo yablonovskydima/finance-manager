@@ -52,6 +52,9 @@ public class Transaction
         this.owner = owner;
     }
 
+    public Transaction() {
+    }
+
     public Long getId() {
         return id;
     }

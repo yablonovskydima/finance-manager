@@ -33,6 +33,9 @@ public class Finance
         this.owner = owner;
     }
 
+    public Finance() {
+    }
+
     public Long getId() {
         return id;
     }
