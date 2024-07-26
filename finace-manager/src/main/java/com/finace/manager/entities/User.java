@@ -2,6 +2,8 @@ package com.finace.manager.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(
     name = "users", uniqueConstraints = {
@@ -36,8 +38,16 @@ public class User
 
     @Column(name = "is_deleted", nullable = false, columnDefinition = "boolean default false")
     private Boolean is_deleted;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Transaction> transactions;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Finance> finances;
 
     public User(Long id,
                 String username,

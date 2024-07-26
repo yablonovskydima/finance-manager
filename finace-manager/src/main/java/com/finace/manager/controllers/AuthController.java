@@ -20,7 +20,6 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController
 {
     private final SimpleAuthService authService;

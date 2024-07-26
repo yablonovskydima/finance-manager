@@ -1,5 +1,6 @@
 package com.finace.manager.controllers;
 
+import com.finace.manager.entities.Finance;
 import com.finace.manager.entities.Transaction;
 import com.finace.manager.requests.ReportRequest;
 import com.finace.manager.services.TransactionService;
@@ -12,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/transactions")
-@CrossOrigin(origins = "http://localhost:3000")
 public class TransactionController
 {
     private final TransactionService transactionService;
@@ -26,6 +26,12 @@ public class TransactionController
     public ResponseEntity<List<Transaction>> getAll()
     {
         return ResponseEntity.ok(transactionService.getAll());
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<Transaction>> getAllByOwnerUsername(@RequestParam("username") String username)
+    {
+        return ResponseEntity.ok(transactionService.getAllByOwnerUsername(username));
     }
 
     @PostMapping("/report")

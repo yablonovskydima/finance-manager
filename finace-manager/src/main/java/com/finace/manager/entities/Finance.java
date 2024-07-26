@@ -22,13 +22,15 @@ public class Finance
     @Column(name = "description", nullable = false, length = 200)
     private String description;
 
-    public Finance(Long id, String name, String description) {
-        this.id = id;
-        this.type = name;
-        this.description = description;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", foreignKey = @ForeignKey(name = "fk_user_finance"))
+    private User owner;
 
-    public Finance() {
+    public Finance(Long id, String type, String description, User owner) {
+        this.id = id;
+        this.type = type;
+        this.description = description;
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -53,5 +55,13 @@ public class Finance
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

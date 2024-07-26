@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/finances")
-@CrossOrigin(origins = "http://localhost:3000")
 public class FinanceController
 {
     private final FinanceService financeService;
@@ -25,6 +24,12 @@ public class FinanceController
     public ResponseEntity<List<Finance>> getAll()
     {
         return ResponseEntity.ok(financeService.getAll());
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<Finance>> getAllByOwnerUsername(@RequestParam("username") String username)
+    {
+        return ResponseEntity.ok(financeService.getAllByOwnerUsername(username));
     }
 
     @GetMapping("/{id}")

@@ -38,17 +38,18 @@ public class Transaction
     @Column(name = "description", nullable = false, length = 150)
     private String description;
 
-    public Transaction(Long id, Finance financeCategory, String transactionType, Double transactionSum, Date date, String description) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", foreignKey = @ForeignKey(name = "fk_user_transaction"))
+    private User owner;
+
+    public Transaction(Long id, Finance financeCategory, String transactionType, Double transactionSum, Date date, String description, User owner) {
         this.id = id;
         this.financeCategory = financeCategory;
         this.transactionType = transactionType;
         this.transactionSum = transactionSum;
         this.date = date;
         this.description = description;
-    }
-
-    public Transaction() {
-        financeCategory = new Finance();
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -97,5 +98,13 @@ public class Transaction
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }
