@@ -12,10 +12,15 @@ const AddCategory = () => {
     };
 
     const handleAdding = () => {
+        const username = localStorage.getItem('username');
         const newCategory = {
             id: null,
             type,
-            description
+            description,
+            owner :{
+                id: null,
+                username
+            }
         };
     
         fetch(`http://localhost:8080/api/v1/finances`, {

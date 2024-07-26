@@ -7,7 +7,9 @@ const Transactions = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/v1/transactions')
+        const username = localStorage.getItem('username');
+        const url = `http://localhost:8080/api/v1/transactions/users?username=${username}`;
+        fetch(url)
             .then(response => response.json())
             .then(data => setTransactions(data))
             .catch(error => console.error('Error fetching data:', error));

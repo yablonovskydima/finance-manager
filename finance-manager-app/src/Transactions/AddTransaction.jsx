@@ -22,6 +22,7 @@ const AddTransaction = () => {
     }, []);
 
     const handleAdding = () => {
+        const username = localStorage.getItem('username');
         const newTransaction = {
             id: null,
             financeCategory: {
@@ -30,7 +31,11 @@ const AddTransaction = () => {
             transactionType,
             transactionSum: parseFloat(transactionSum),
             date,
-            description
+            description,
+            owner: {
+                id: null,
+                username
+            }
         };
 
         fetch(`http://localhost:8080/api/v1/transactions`, {

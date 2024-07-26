@@ -11,7 +11,9 @@ const ReportGenerator = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/v1/finances')
+        const username = localStorage.getItem('username');
+        const url = `http://localhost:8080/api/v1/finances/users?username=${username}`;
+        fetch(url)
             .then(response => response.json())
             .then(data => setCategories(data))
             .catch(error => console.error('Error fetching categories:', error));
@@ -32,13 +34,15 @@ const ReportGenerator = () => {
     };
 
     const handleGenerate = () => {
+        const username = localStorage.getItem('username');
         if (!validateDates()) return;
 
         const reportRequest = {
             from,
             to,
             transactionType,
-            financeCategoryName
+            financeCategoryName,
+            ownerUsername: username
         };
 
         fetch('http://localhost:8080/api/v1/transactions/report', {
@@ -61,13 +65,15 @@ const ReportGenerator = () => {
     };
 
     const hangelGenerateGraph = () => {
+        const username = localStorage.getItem('username');
         if (!validateDates()) return;
 
         const reportRequest = {
             from,
             to,
             transactionType,
-            financeCategoryName
+            financeCategoryName,
+            ownerUsername: username
         };
 
         fetch('http://localhost:8080/api/v1/transactions/report', {
