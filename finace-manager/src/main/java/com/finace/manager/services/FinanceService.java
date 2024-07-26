@@ -1,8 +1,10 @@
 package com.finace.manager.services;
 
+import com.finace.manager.dto.FinanceDTO;
 import com.finace.manager.entities.Finance;
 import com.finace.manager.entities.User;
 import com.finace.manager.exeptions.ResourceNotFoundException;
+import com.finace.manager.mappers.FinanceMapper;
 import com.finace.manager.repositories.FinanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,7 +66,8 @@ public class FinanceService implements CRUDInterface<Finance, Long>
 
     public List<Finance> getAllByOwnerUsername(String username)
     {
-        return financeRepository.findAllByOwnerUsername(username);
+        List<Finance> finances = financeRepository.findAllByOwnerUsername(username);
+        return finances;
     }
 
 

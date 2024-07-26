@@ -22,7 +22,7 @@ public class Finance
     @Column(name = "description", nullable = false, length = 200)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", foreignKey = @ForeignKey(name = "fk_user_finance"))
     private User owner;
 

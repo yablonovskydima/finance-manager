@@ -1,7 +1,8 @@
 package com.finace.manager.controllers;
 
-import com.finace.manager.entities.Finance;
+import com.finace.manager.dto.TransactionDTO;
 import com.finace.manager.entities.Transaction;
+import com.finace.manager.mappers.TransactionMapper;
 import com.finace.manager.requests.ReportRequest;
 import com.finace.manager.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,40 +17,48 @@ import java.util.List;
 public class TransactionController
 {
     private final TransactionService transactionService;
+    private final TransactionMapper transactionMapper;
 
     @Autowired
-    public TransactionController(TransactionService transactionService) {
+    public TransactionController(TransactionService transactionService, TransactionMapper transactionMapper) {
         this.transactionService = transactionService;
+        this.transactionMapper = transactionMapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> getAll()
+    public ResponseEntity<List<TransactionDTO>> getAll()
     {
-        return ResponseEntity.ok(transactionService.getAll());
+        List<Transaction> transactions = transactionService.getAll();
+        List<TransactionDTO> transactionDTOS = transactions.stream().map(transactionMapper::toDTO).toList();
+        return ResponseEntity.ok(transactionDTOS);
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<Transaction>> getAllByOwnerUsername(@RequestParam("username") String username)
+    public ResponseEntity<List<TransactionDTO>> getAllByOwnerUsername(@RequestParam("username") String username)
     {
-        return ResponseEntity.ok(transactionService.getAllByOwnerUsername(username));
+        List<Transaction> transactions = transactionService.getAllByOwnerUsername(username);
+        List<TransactionDTO> transactionDTOS = transactions.stream().map(transactionMapper::toDTO).toList();
+        return ResponseEntity.ok(transactionDTOS);
     }
 
     @PostMapping("/report")
-    public ResponseEntity<List<Transaction>> getByFilter(@RequestBody ReportRequest request)
+    public ResponseEntity<List<TransactionDTO>> getByFilter(@RequestBody ReportRequest request)
     {
-        return ResponseEntity.ok(transactionService.getByFilter(request));
+        List<Transaction> transactions = transactionService.getByFilter(request);
+        List<TransactionDTO> transactionDTOS = transactions.stream().map(transactionMapper::toDTO).toList();
+        return ResponseEntity.ok(transactionDTOS);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id)
+    public ResponseEntity<TransactionDTO> getTransactionById(@PathVariable Long id)
     {
-        return ResponseEntity.of(transactionService.getById(id));
+        return ResponseEntity.ok(transactionMapper.toDTO(transactionService.getById(id).orElseThrow()));
     }
 
     @PostMapping
-    public ResponseEntity<Transaction> createTransactions(@RequestBody Transaction transaction, UriComponentsBuilder uriComponentsBuilder)
+    public ResponseEntity<TransactionDTO> createTransactions(@RequestBody Transaction transaction, UriComponentsBuilder uriComponentsBuilder)
     {
-        Transaction created = transactionService.create(transaction);
+        TransactionDTO created = transactionMapper.toDTO(transactionService.create(transaction));
         return ResponseEntity.created(uriComponentsBuilder.path("/transactions/{id}")
                 .build(created.getId())).body(created);
     }

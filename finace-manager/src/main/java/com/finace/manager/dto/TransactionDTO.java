@@ -1,48 +1,23 @@
-package com.finace.manager.entities;
+package com.finace.manager.dto;
 
+import com.finace.manager.entities.Finance;
+import com.finace.manager.entities.User;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Check;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
-@Entity
-@Table(
-        name = "transactions",
-        uniqueConstraints = {
-            @UniqueConstraint(columnNames = "finance_id", name = "fk_finance_transaction")
-        }
-)
-public class Transaction
+public class TransactionDTO
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
-
-    @ManyToOne()
-    @JoinColumn(name = "finance_id", foreignKey = @ForeignKey(name = "fk_finance_transaction"))
-    private Finance financeCategory;
-
-    @Column(name = "transaction_type", nullable = false, length = 100)
+    private FinanceDTO financeCategory;
     private String transactionType;
-
-    @Column(name = "transaction_sum", nullable = false)
-    @Check(constraints = "transaction_sum >= 0")
     private Double transactionSum;
-
-    @Column(name = "transaction_date", nullable = false)
     private Date date;
-
-    @Column(name = "description", nullable = false, length = 150)
     private String description;
+    private UserDTO owner;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "owner_id", foreignKey = @ForeignKey(name = "fk_user_transaction"))
-    private User owner;
-
-    public Transaction(Long id, Finance financeCategory, String transactionType, Double transactionSum, Date date, String description, User owner) {
+    public TransactionDTO(Long id, FinanceDTO financeCategory, String transactionType, Double transactionSum, Date date, String description, UserDTO owner) {
         this.id = id;
         this.financeCategory = financeCategory;
         this.transactionType = transactionType;
@@ -52,7 +27,7 @@ public class Transaction
         this.owner = owner;
     }
 
-    public Transaction() {
+    public TransactionDTO() {
     }
 
     public Long getId() {
@@ -63,11 +38,11 @@ public class Transaction
         this.id = id;
     }
 
-    public Finance getFinanceCategory() {
+    public FinanceDTO getFinanceCategory() {
         return financeCategory;
     }
 
-    public void setFinanceCategory(Finance financeCategory) {
+    public void setFinanceCategory(FinanceDTO financeCategory) {
         this.financeCategory = financeCategory;
     }
 
@@ -103,11 +78,11 @@ public class Transaction
         this.description = description;
     }
 
-    public User getOwner() {
+    public UserDTO getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(UserDTO owner) {
         this.owner = owner;
     }
 }
