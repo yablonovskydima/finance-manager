@@ -1,6 +1,7 @@
-package com.finace.manager.services;
+package com.finace.manager.requests.security.services;
 
 import com.finace.manager.entities.Finance;
+import com.finace.manager.entities.User;
 import com.finace.manager.exeptions.ResourceNotFoundException;
 import com.finace.manager.repositories.FinanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,19 @@ public class FinanceService implements CRUDInterface<Finance, Long>
 {
 
     private final FinanceRepository financeRepository;
+    private final UserService userService;
 
     @Autowired
-    public FinanceService(FinanceRepository financeRepository) {
+    public FinanceService(FinanceRepository financeRepository, UserService userService) {
         this.financeRepository = financeRepository;
+        this.userService = userService;
     }
 
     @Override
     public Finance create(Finance category)
     {
+        User user = userService.getByUsername(category.getOwner().getUsername());
+        category.setOwner(user);
         return financeRepository.save(category);
     }
 
@@ -55,6 +60,12 @@ public class FinanceService implements CRUDInterface<Finance, Long>
     public void deleteById(Long id)
     {
         delete(getFinanceByIdOrThrow(id));
+    }
+
+    public List<Finance> getAllByOwnerUsername(String username)
+    {
+        List<Finance> finances = financeRepository.findAllByOwnerUsername(username);
+        return finances;
     }
 
 
