@@ -6,7 +6,7 @@ const AddCategory = () => {
     const [type, setType] = useState('');
     const [description, setDescription] = useState('');
     const navigate = useNavigate();
-
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
     const onCancel = () => {
         navigate('/categories'); 
     };
@@ -23,7 +23,7 @@ const AddCategory = () => {
             }
         };
     
-        fetch(`http://localhost:8080/api/v1/finances`, {
+        fetch(`${apiUrl}/api/v1/finances`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

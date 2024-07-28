@@ -9,10 +9,11 @@ const ReportGenerator = () => {
     const [transactionType, setTransactionType] = useState(null);
     const [financeCategoryName, setFinanceCategoryName] = useState(null);
     const [error, setError] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
     useEffect(() => {
         const username = localStorage.getItem('username');
-        const url = `http://localhost:8080/api/v1/finances/users?username=${username}`;
+        const url = `${apiUrl}/api/v1/finances/users?username=${username}`;
         fetch(url)
             .then(response => response.json())
             .then(data => setCategories(data))
@@ -45,7 +46,7 @@ const ReportGenerator = () => {
             ownerUsername: username
         };
 
-        fetch('http://localhost:8080/api/v1/transactions/report', {
+        fetch(`${apiUrl}/api/v1/transactions/report`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,7 +77,7 @@ const ReportGenerator = () => {
             ownerUsername: username
         };
 
-        fetch('http://localhost:8080/api/v1/transactions/report', {
+        fetch(`${apiUrl}/api/v1/transactions/report`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

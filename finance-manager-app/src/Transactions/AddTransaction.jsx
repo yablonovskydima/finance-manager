@@ -9,13 +9,15 @@ const AddTransaction = () => {
     const [transactionSum, setSum] = useState(0);
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
+
 
     const onCancel = () => {
         navigate('/transactions'); 
     };
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/v1/finances')
+        fetch(`${apiUrl}/api/v1/finances`)
             .then(response => response.json())
             .then(data => setCategories(data))
             .catch(error => console.error('Error fetching categories:', error));
@@ -38,7 +40,7 @@ const AddTransaction = () => {
             }
         };
 
-        fetch(`http://localhost:8080/api/v1/transactions`, {
+        fetch(`${apiUrl}/api/v1/transactions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

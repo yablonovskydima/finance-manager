@@ -11,16 +11,17 @@ const EditTransaction = () => {
     const [transactionSum, setSum] = useState(0);
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/v1/finances')
+        fetch(`${apiUrl}/api/v1/finances`)
             .then(response => response.json())
             .then(data => setCategories(data))
             .catch(error => console.error('Error fetching categories:', error));
     }, []);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/transactions/${id}`)
+        fetch(`${apiUrl}/api/v1/transactions/${id}`)
             .then(response => response.json())
             .then(data => {
                 setTransaction(data);
@@ -49,7 +50,7 @@ const EditTransaction = () => {
             description
         };
 
-        fetch(`http://localhost:8080/api/v1/transactions/${id}`, {
+        fetch(`${apiUrl}/api/v1/transactions/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

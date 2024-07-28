@@ -6,6 +6,7 @@ const EditCategory = () =>
     const { id } = useParams();
     const navigate = useNavigate();
     const [category, setCategory] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
 
     const onCancel = () => {
@@ -13,7 +14,7 @@ const EditCategory = () =>
     };
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/finances/${id}`)
+        fetch(`${apiUrl}/api/v1/finances/${id}`)
             .then(response => response.json())
             .then(data => {
                 setCategory(data);
@@ -33,7 +34,7 @@ const EditCategory = () =>
             description
         };
 
-        fetch(`http://localhost:8080/api/v1/finances/${category.id}`, {
+        fetch(`${apiUrl}/api/v1/finances/${category.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

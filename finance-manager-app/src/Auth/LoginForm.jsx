@@ -9,12 +9,13 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/auth/login', { username, password });
+      const response = await axios.post(`${apiUrl}/api/v1/auth/login`, { username, password });
       localStorage.setItem('accessToken', response.data.accessToken);
       localStorage.setItem('refreshToken', response.data.refreshToken);
       login(username);

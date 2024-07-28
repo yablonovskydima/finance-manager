@@ -15,12 +15,13 @@ const [login, setLogin] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
   const handleRegister = async (e) => {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/auth/register', { login, email, password, confirmPassword });
+      const response = await axios.post(`${apiUrl}/api/v1/auth/register`, { login, email, password, confirmPassword });
       localStorage.setItem('accessToken', response.data.accessToken);
       localStorage.setItem('refreshToken', response.data.refreshToken);
       authLogin(login);

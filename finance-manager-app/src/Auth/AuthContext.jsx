@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -17,7 +18,7 @@ const AuthProvider = ({ children }) => {
     const validateToken = async () => {
       if (token) {
         try {
-          await axios.get(`http://localhost:8080/api/v1/auth/validate`, {
+          await axios.get(`${apiUrl}/api/v1/auth/validate`, {
             params: { token }
           });
           setUsername(storedUsername);

@@ -14,10 +14,11 @@ const EditAccount = () =>
     const navigate = useNavigate();
     const { username } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
     const handleUsernameChange = async () => {
         try {
-            await axios.put(`http://localhost:8080/api/v1/auth/users/${username}/change-username`, {
+            await axios.put(`${apiUrl}/api/v1/auth/users/${username}/change-username`, {
                 oldValue: oldUsername,
                 newValue: newUsername
             });
@@ -32,7 +33,7 @@ const EditAccount = () =>
 
     const handleEmailChange = async () => {
         try {
-            await axios.put(`http://localhost:8080/api/v1/auth/users/${username}/change-email`, {
+            await axios.put(`${apiUrl}/api/v1/auth/users/${username}/change-email`, {
                 oldValue: oldEmail,
                 newValue: newEmail
             });
@@ -45,7 +46,7 @@ const EditAccount = () =>
 
     const handlePasswordChange = async () => {
         try {
-            await axios.put(`http://localhost:8080/api/v1/auth/users/${username}/change-password`, {
+            await axios.put(`${apiUrl}/api/v1/auth/users/${username}/change-password`, {
                 oldValue: oldPassword,
                 newValue: newPassword
             });
@@ -64,7 +65,7 @@ const EditAccount = () =>
            if(confirmDelete)
             {
                 try{
-                    await axios.delete(`http://localhost:8080/api/v1/auth/users/${username}/drop-account`);
+                    await axios.delete(`${apiUrl}/api/v1/auth/users/${username}/drop-account`);
                     localStorage.removeItem('accessToken');
                     localStorage.removeItem('refreshToken');
                     localStorage.removeItem('username');

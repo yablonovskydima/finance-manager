@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 const Graph = () => {
     const location = useLocation();
     const { report } = location.state || {};
-
+    
     const transactions = report?.transactions || [];
     const from = report?.from || "N/A";
     const to = report?.to || "N/A";

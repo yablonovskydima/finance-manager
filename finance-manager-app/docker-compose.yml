@@ -1,5 +1,9 @@
 version: '3.8'
 
+networks:
+  app-network:
+    external: true
+
 services:
   finance-manager-frontend:
     build:
@@ -8,4 +12,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/finance-manager-app  
+      - .:/finance-manager-app
+    environment:
+      - REACT_APP_API_URL=http://localhost:8083
+    networks:
+      - app-network

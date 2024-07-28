@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const Transactions = () => {
     const [transactions, setTransactions] = useState([]);
     const navigate = useNavigate();
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
     useEffect(() => {
         const username = localStorage.getItem('username');
-        const url = `http://localhost:8080/api/v1/transactions/users?username=${username}`;
+        const url = `${apiUrl}/api/v1/transactions/users?username=${username}`;
         fetch(url)
             .then(response => response.json())
             .then(data => setTransactions(data))
@@ -16,7 +17,7 @@ const Transactions = () => {
     }, []);
 
     const handleDelete = (id) => {
-        fetch(`http://localhost:8080/api/v1/transactions/${id}`, {
+        fetch(`${apiUrl}/api/v1/transactions/${id}`, {
             method: 'DELETE',
         })
         .then(response => {
