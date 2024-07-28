@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
     };
 
     validateToken();
-  }, []);
+  }, [apiUrl]);
 
   const login = (username) => {
     setUsername(username);
