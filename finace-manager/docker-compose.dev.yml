@@ -1,5 +1,9 @@
 version: "3.5"
 
+networks:
+  app-network:
+    external: true
+
 services:
   db:
     image: mysql:8.0
@@ -10,9 +14,10 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: user
       MYSQL_PASSWORD: password123
-
     ports:
       - "3306:3306"
+    networks:
+        - app-network
 
   app:
     build:
@@ -28,7 +33,5 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/finance_manager_db
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password123
-
-networks:
-  app-network:
-    external: true
+    networks:
+      - app-network
