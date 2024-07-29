@@ -43,10 +43,10 @@ public class User
     @Column(name = "role", nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Finance> finances;
 
     public User(Long id,
