@@ -17,7 +17,8 @@ const AddTransaction = () => {
     };
 
     useEffect(() => {
-        fetch(`${apiUrl}/api/v1/finances`)
+        const username = localStorage.getItem('username');
+        fetch(`${apiUrl}/api/v1/finances/users?username=${username}`)
             .then(response => response.json())
             .then(data => setCategories(data))
             .catch(error => console.error('Error fetching categories:', error));
