@@ -1,8 +1,10 @@
 package com.finance.manager.config;
 
+import com.finance.manager.requests.security.filters.JwtAuthenticationFilter;
 import com.finance.manager.securityUtils.UserDetailsServiceImpl;
 import com.finance.manager.requests.security.services.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -18,12 +20,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig
 {
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
@@ -34,7 +43,7 @@ public class SecurityConfig
         http.authorizeHttpRequests(x -> {
             x.requestMatchers("/auth/admin/register").permitAll();
             x.requestMatchers("/auth/register", "/auth/login", "/auth/validate").permitAll();
-            x.anyRequest().permitAll();
+            x.anyRequest().authenticated();
         });
         http.exceptionHandling(handling -> {
             handling.authenticationEntryPoint((request, response, exception) -> {
@@ -53,6 +62,7 @@ public class SecurityConfig
                     response.setStatus(HttpServletResponse.SC_OK));
             x.deleteCookies("JSESSIONID");
         });
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     @Bean
