@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useEffect, useContext} from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Categories from './Categories/Categories';
 import EditCategory from './Categories/EditCategory';
@@ -18,7 +18,7 @@ import { AuthContext } from './Auth/AuthContext';
 import EditAccount from './Account/EditAccount';
 
 function App() {
-  const { username, logout } = useContext(AuthContext);
+  const { username, logout, role } = useContext(AuthContext);
 
   return (
     <Router>
@@ -35,7 +35,9 @@ function App() {
               </>
             ) : (
               <>
-                <Link to="/edit-account"><button className="btn btn-outline-light" >Edit account</button></Link>
+                <Link to="/edit-account">
+                  <button className="btn btn-outline-light">Edit account</button>
+                </Link>
                 <button className="btn btn-outline-light" onClick={logout}>Logout</button>
                 <span className="navbar-text text-white">Logged as {username}</span>
               </>
@@ -60,7 +62,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
 
-          <Route path="/edit-account" element={<ProtectedRoute element={<EditAccount/>}/>}/>
+          <Route path="/edit-account" element={<ProtectedRoute element={<EditAccount />} />} />
         </Routes>
       </div>
     </Router>

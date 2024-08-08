@@ -13,15 +13,21 @@ const LoginForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post(`${apiUrl}/api/v1/auth/login`, { username, password });
-      localStorage.setItem('accessToken', response.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.refreshToken);
-      login(username);
-      navigate('/categories');
+  
+      if (response.data && response.data.accessToken && response.data.refreshToken) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
+        login(username, response.data.accessToken, response.data.refreshToken);
+        navigate('/categories');
+      } else {
+        throw new Error('Invalid response from login');
+      }
     } catch (error) {
-      setErrorMessage(error.response.data.message || 'Failed to login');
+      const message = error.response?.data?.message || 'Failed to login';
+      setErrorMessage(message);
     }
   };
 
