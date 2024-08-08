@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
-const EditCategory = () => 
-{
+const EditCategory = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [category, setCategory] = useState('');
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
-
 
     const onCancel = () => {
         navigate('/categories'); 
     };
 
     useEffect(() => {
-        fetch(`${apiUrl}/api/v1/finances/${id}`)
+        const accessToken = Cookies.get('accessToken');
+        fetch(`${apiUrl}/api/v1/finances/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 setCategory(data);
@@ -28,6 +32,7 @@ const EditCategory = () =>
     const [description, setDescription] = useState(category.description || '');
 
     const handleUpdate = () => {
+        const accessToken = Cookies.get('accessToken');
         const updatedCategory = {
             id: category.id,
             type,
@@ -37,7 +42,8 @@ const EditCategory = () =>
         fetch(`${apiUrl}/api/v1/finances/${category.id}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify(updatedCategory)
         })
@@ -52,7 +58,7 @@ const EditCategory = () =>
             console.error('Error updating category:', error);
         });
         onCancel();
-      };
+    };
 
     return(
         <div className="container mt-5 d-flex justify-content-center">

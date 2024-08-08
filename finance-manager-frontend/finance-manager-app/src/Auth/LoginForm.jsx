@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
+import Cookies from 'js-cookie';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
@@ -18,8 +19,8 @@ const LoginForm = () => {
       const response = await axios.post(`${apiUrl}/api/v1/auth/login`, { username, password });
   
       if (response.data && response.data.accessToken && response.data.refreshToken) {
-        localStorage.setItem('accessToken', response.data.accessToken);
-        localStorage.setItem('refreshToken', response.data.refreshToken);
+        Cookies.set('accessToken', response.data.accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
+        Cookies.set('refreshToken', response.data.refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
         login(username, response.data.accessToken, response.data.refreshToken);
         navigate('/categories');
       } else {

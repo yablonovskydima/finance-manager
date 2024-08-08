@@ -1,32 +1,35 @@
 import React, { useState } from "react";
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const AddCategory = () => {
-
     const [type, setType] = useState('');
     const [description, setDescription] = useState('');
     const navigate = useNavigate();
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
+
     const onCancel = () => {
         navigate('/categories'); 
     };
 
     const handleAdding = () => {
-        const username = localStorage.getItem('username');
+        const username = Cookies.get('username');
+        const accessToken = Cookies.get('accessToken');
         const newCategory = {
             id: null,
             type,
             description,
-            owner :{
+            owner: {
                 id: null,
                 username
             }
         };
-    
+
         fetch(`${apiUrl}/api/v1/finances`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify(newCategory)
         })

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode'; // Corrected import
+import Cookies from 'js-cookie';
 
 export const AuthContext = createContext();
 
@@ -11,9 +12,9 @@ const AuthProvider = ({ children }) => {
   const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
   useEffect(() => {
-    const storedUsername = localStorage.getItem('username');
-    const token = localStorage.getItem('accessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
+    const storedUsername = Cookies.get('username');
+    const token = Cookies.get('accessToken');
+    const refreshToken = Cookies.get('refreshToken');
 
     if (storedUsername) {
       setUsername(storedUsername);
@@ -43,13 +44,11 @@ const AuthProvider = ({ children }) => {
 
   const refreshAccessToken = async (refreshToken) => {
     try {
-      // Надсилаємо запит на оновлення токена
-      const response = await axios.post(`${apiUrl}/api/v1/auth/refresh`, { refreshToken });
-  
-      // Перевірка наявності поля `accessToken` у відповіді
+      const response = await axios.post(`${apiUrl}/api/v1/auth/refresh`, { refreshToken }, { withCredentials: true });
+
       if (response.data && response.data.accessToken) {
         const { accessToken } = response.data;
-        localStorage.setItem('accessToken', accessToken);
+        Cookies.set('accessToken', accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
         const decodedToken = jwtDecode(accessToken);
         setRole(decodedToken.role);
         setIsAuthenticated(true);
@@ -64,9 +63,9 @@ const AuthProvider = ({ children }) => {
 
   const login = (username, accessToken, refreshToken) => {
     setUsername(username);
-    localStorage.setItem('username', username);
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    Cookies.set('username', username, { expires: 7, secure: true, sameSite: 'Strict' });
+    Cookies.set('accessToken', accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
+    Cookies.set('refreshToken', refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
     const decodedToken = jwtDecode(accessToken);
     setRole(decodedToken.role);
     setIsAuthenticated(true);
@@ -76,9 +75,9 @@ const AuthProvider = ({ children }) => {
     setUsername('');
     setRole('');
     setIsAuthenticated(false);
-    localStorage.removeItem('username');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    Cookies.remove('username');
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
   };
 
   return (

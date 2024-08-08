@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 const ReportGenerator = () => {
     const [categories, setCategories] = useState([]);
@@ -12,9 +13,13 @@ const ReportGenerator = () => {
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
     useEffect(() => {
-        const username = localStorage.getItem('username');
+        const username = Cookies.get('username');
         const url = `${apiUrl}/api/v1/finances/users?username=${username}`;
-        fetch(url)
+        fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${Cookies.get('accessToken')}`
+            }
+        })
             .then(response => response.json())
             .then(data => setCategories(data))
             .catch(error => console.error('Error fetching categories:', error));
@@ -35,7 +40,7 @@ const ReportGenerator = () => {
     };
 
     const handleGenerate = () => {
-        const username = localStorage.getItem('username');
+        const username = Cookies.get('username');
         if (!validateDates()) return;
 
         const reportRequest = {
@@ -49,7 +54,8 @@ const ReportGenerator = () => {
         fetch(`${apiUrl}/api/v1/transactions/report`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${Cookies.get('accessToken')}`
             },
             body: JSON.stringify(reportRequest)
         })
@@ -66,7 +72,7 @@ const ReportGenerator = () => {
     };
 
     const hangelGenerateGraph = () => {
-        const username = localStorage.getItem('username');
+        const username = Cookies.get('username');
         if (!validateDates()) return;
 
         const reportRequest = {
@@ -80,7 +86,8 @@ const ReportGenerator = () => {
         fetch(`${apiUrl}/api/v1/transactions/report`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${Cookies.get('accessToken')}`
             },
             body: JSON.stringify(reportRequest)
         })
@@ -95,6 +102,7 @@ const ReportGenerator = () => {
         })
         .catch(error => console.error('Error generating report:', error));
     };
+
 
     const onCancel = () => {
         navigate(`/categories`);

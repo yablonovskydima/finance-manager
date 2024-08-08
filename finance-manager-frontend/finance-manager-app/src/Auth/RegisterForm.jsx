@@ -3,9 +3,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext.jsx';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import Cookies from 'js-cookie';
 
 const RegisterForm = () => {
-const [login, setLogin] = useState('');
+  const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -22,12 +23,12 @@ const [login, setLogin] = useState('');
     
     try {
       const response = await axios.post(`${apiUrl}/api/v1/auth/register`, { login, email, password, confirmPassword });
-      localStorage.setItem('accessToken', response.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.refreshToken);
-      authLogin(login);
+      Cookies.set('accessToken', response.data.accessToken, { expires: 1, secure: true, sameSite: 'Strict' });
+      Cookies.set('refreshToken', response.data.refreshToken, { expires: 7, secure: true, sameSite: 'Strict' });
+      authLogin(login, response.data.accessToken, response.data.refreshToken);
       navigate('/categories');
     } catch (error) {
-      setErrorMessage(error.response.data.message || "Registration failed")
+      setErrorMessage(error.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -89,7 +90,7 @@ const [login, setLogin] = useState('');
   }, [password, confirmPassword]);
 
   const renderLoginTooltip = (props) => (
-    <Tooltip id="login-tooltip"  {...props} >
+    <Tooltip id="login-tooltip" {...props}>
       Login must be at least 5 characters long and contain only letters and numbers.
     </Tooltip>
   );
@@ -108,17 +109,17 @@ const [login, setLogin] = useState('');
 
   return (
     <div className="container mt-5">
-    <div className="row justify-content-center">
-      <div className="col-md-6">
-        <div className="card">
-          <div className="card-header bg-primary text-white">
-            <h5 className="card-title mb-0">Register</h5>
-          </div>
-          <div className="card-body">
-          {errorMessage && <div className="alert alert-danger" role="alert">{errorMessage}</div>}
-            <form onSubmit={handleRegister}>
-              <div className="mb-3">
-              <label htmlFor="login" className="form-label">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-header bg-primary text-white">
+              <h5 className="card-title mb-0">Register</h5>
+            </div>
+            <div className="card-body">
+              {errorMessage && <div className="alert alert-danger" role="alert">{errorMessage}</div>}
+              <form onSubmit={handleRegister}>
+                <div className="mb-3">
+                  <label htmlFor="login" className="form-label">
                     Login
                     <OverlayTrigger
                       placement="right"
@@ -136,17 +137,17 @@ const [login, setLogin] = useState('');
                     required
                   />
                   {loginError && <div className="invalid-feedback">{loginError}</div>}
-              </div>
-              <div className="mb-3">
-                    <label htmlFor="email" className="form-label">
-                        Email
-                        <OverlayTrigger
-                        placement="right"
-                        overlay={renderEmailTooltip}
-                        >
-                        <span className="ms-2 text-info" style={{ cursor: 'pointer' }}>?</span>
-                        </OverlayTrigger>
-                    </label>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                    <OverlayTrigger
+                      placement="right"
+                      overlay={renderEmailTooltip}
+                    >
+                      <span className="ms-2 text-info" style={{ cursor: 'pointer' }}>?</span>
+                    </OverlayTrigger>
+                  </label>
                   <input
                     type="email"
                     id="email"
@@ -156,9 +157,9 @@ const [login, setLogin] = useState('');
                     required
                   />
                   {emailError && <div className="invalid-feedback">{emailError}</div>}
-              </div>
-              <div className="mb-3">
-              <label htmlFor="password" className="form-label">
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">
                     Password
                     <OverlayTrigger
                       placement="right"
@@ -176,9 +177,9 @@ const [login, setLogin] = useState('');
                     required
                   />
                   {passwordError && <div className="invalid-feedback">{passwordError}</div>}
-              </div>
-              <div className="mb-3">
-                <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
                   <input
                     type="password"
                     id="confirmPassword"
@@ -188,14 +189,14 @@ const [login, setLogin] = useState('');
                     required
                   />
                   {passwordError && <div className="invalid-feedback">{passwordError}</div>}
-              </div>
-              <button type="submit" className="btn btn-primary w-100">Register</button>
-            </form>
+                </div>
+                <button type="submit" className="btn btn-primary w-100">Register</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   );
 };
 

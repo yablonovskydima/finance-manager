@@ -1,6 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Categories = () => {
     const [finances, setFinances] = useState([]);
@@ -8,17 +8,26 @@ const Categories = () => {
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8083';
 
     useEffect(() => {
-        const username = localStorage.getItem('username');
+        const username = Cookies.get('username');
+        const accessToken = Cookies.get('accessToken');
         const url = `${apiUrl}/api/v1/finances/users?username=${username}`;
-        fetch(url)
+        fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
             .then(response => response.json())
             .then(data => setFinances(data))
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 
     const handleDelete = (id) => {
+        const accessToken = Cookies.get('accessToken');
         fetch(`${apiUrl}/api/v1/finances/${id}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
         .then(response => {
             if (response.ok) {
